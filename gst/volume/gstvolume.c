@@ -793,10 +793,7 @@ volume_transform_ip (GstBaseTransform * base, GstBuffer * outbuf)
     }
   }
 
-  if (self->current_volume == 0.0 || self->current_mute) {
-    orc_memset (map.data, 0, map.size);
-    GST_BUFFER_FLAG_SET (outbuf, GST_BUFFER_FLAG_GAP);
-  } else if (self->current_volume != 1.0) {
+  if (self->current_volume != 1.0) {
     self->process (self, map.data, map.size);
   }
 
