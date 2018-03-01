@@ -212,7 +212,7 @@ _is_renderer (GstElementFactory * factory)
     if (strstr (klass, "Overlay/Subtitle") != NULL ||
         strstr (klass, "Overlay/SubPicture") != NULL)
       return TRUE;
-    if (strcmp (name, "textoverlay") == 0)
+    if (strcmp (name, "imxg2dtextoverlay") == 0)
       return TRUE;
   }
   return FALSE;
@@ -330,10 +330,10 @@ _factory_filter (GstPluginFeature * feature, GstCaps ** subcaps)
 
   factory = GST_ELEMENT_FACTORY_CAST (feature);
 
-  /* only select elements with autoplugging rank or textoverlay */
+  /* only select elements with autoplugging rank or imxg2dtextoverlay */
   name = gst_plugin_feature_get_name (feature);
   rank = gst_plugin_feature_get_rank (feature);
-  if (strcmp ("textoverlay", name) != 0 && rank < GST_RANK_MARGINAL)
+  if (strcmp ("imxg2dtextoverlay", name) != 0 && rank < GST_RANK_MARGINAL)
     return FALSE;
 
   /* Check if it's a renderer or a parser */
@@ -808,8 +808,8 @@ _setup_renderer (GstSubtitleOverlay * self, GstElement * renderer)
   const gchar *name =
       gst_plugin_feature_get_name (GST_PLUGIN_FEATURE_CAST (factory));
 
-  if (strcmp (name, "textoverlay") == 0) {
-    /* Set some textoverlay specific properties */
+  if (strcmp (name, "imxg2dtextoverlay") == 0) {
+    /* Set some imxg2dtextoverlay specific properties */
     gst_util_set_object_arg (G_OBJECT (renderer), "halignment", "center");
     gst_util_set_object_arg (G_OBJECT (renderer), "valignment", "bottom");
     g_object_set (G_OBJECT (renderer), "wait-text", FALSE, NULL);

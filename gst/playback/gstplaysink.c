@@ -1865,12 +1865,12 @@ gen_video_chain (GstPlaySink * playsink, gboolean raw, gboolean async)
     } else {
       GST_DEBUG_OBJECT (playsink, "adding video filter");
       chain->filter_conv =
-          gst_element_factory_make ("videoconvert", "filter-convert");
+          gst_element_factory_make (COLORSPACE, "filter-convert");
       if (!chain->filter_conv) {
-        post_missing_element_message (playsink, "videoconvert");
+        post_missing_element_message (playsink, COLORSPACE);
         GST_ELEMENT_WARNING (playsink, CORE, MISSING_PLUGIN,
             (_("Missing element '%s' - check your GStreamer installation."),
-                "videoconvert"),
+                 COLORSPACE),
             ("video playback and visualizations might not work"));
       } else {
         gst_bin_add (bin, chain->filter_conv);
@@ -1940,9 +1940,7 @@ gen_video_chain (GstPlaySink * playsink, gboolean raw, gboolean async)
         && (playsink->flags & GST_PLAY_FLAG_SOFT_COLORBALANCE);
 
     GST_DEBUG_OBJECT (playsink, "creating videoconverter");
-    chain->conv =
-        g_object_new (GST_TYPE_PLAY_SINK_VIDEO_CONVERT, "name", "vconv",
-        "use-converters", use_converters, "use-balance", use_balance, NULL);
+    chain->conv = gst_element_factory_make(COLORSPACE, "vconv");
 
     GST_OBJECT_LOCK (playsink);
     if (use_balance && GST_PLAY_SINK_VIDEO_CONVERT (chain->conv)->balance) {
@@ -2546,6 +2544,7 @@ gen_text_chain (GstPlaySink * playsink)
 
       chain->overlay =
           gst_element_factory_make ("subtitleoverlay", "suboverlay");
+      playsink->text_sink = gst_object_ref(chain->overlay);
       if (chain->overlay == NULL) {
         post_missing_element_message (playsink, "subtitleoverlay");
         GST_ELEMENT_WARNING (playsink, CORE, MISSING_PLUGIN,
