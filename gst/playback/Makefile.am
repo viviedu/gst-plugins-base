@@ -1,6 +1,6 @@
 plugin_LTLIBRARIES = libgstplayback.la
 
-csp_cflags = -DCOLORSPACE=\"videoconvert\"
+csp_cflags = -DCOLORSPACE=\"imxipuvideotransform\"
 
 libgstplayback_la_SOURCES = \
 	gstdecodebin2.c \
