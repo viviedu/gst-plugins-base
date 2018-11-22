@@ -2154,7 +2154,7 @@ gint x0, gint x1, gint y0, gint y1) \
 { \
   gint i, j;\
   guint8 *dest_ptr;\
-  gint alpha_offset[2] = { 3, 0 };\
+  const gint alpha_offset = OFFSET == 1 ? 0 : 3;\
   \
   dest_ptr = dest->data[0];\
   \
@@ -2162,8 +2162,8 @@ gint x0, gint x1, gint y0, gint y1) \
     for (j = x0; j < x1; j++) {\
       gint y, y_pos, k;\
       y_pos = (i * 4 * overlay->width) + j * 4;\
-      if (dest_ptr[y_pos + alpha_offset[OFFSET]] == 0) {\
-        dest_ptr[y_pos + alpha_offset[OFFSET]] = overlay->shading_value;\
+      if (dest_ptr[y_pos + alpha_offset] == 0) {\
+        dest_ptr[y_pos + alpha_offset] = overlay->shading_value;\
       } else {\
         for (k = OFFSET; k < 3+OFFSET; k++) {\
           y = dest_ptr[y_pos + k] - overlay->shading_value;\
