@@ -351,6 +351,8 @@ gst_rtsp_connection_create (const GstRTSPUrl * url, GstRTSPConnection ** conn)
   newconn->cancellable = g_cancellable_new ();
   newconn->client = g_socket_client_new ();
 
+  g_socket_client_set_enable_proxy(newconn->client, FALSE);
+
   if (url->transports & GST_RTSP_LOWER_TRANS_TLS)
     g_socket_client_set_tls (newconn->client, TRUE);
 
